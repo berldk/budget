@@ -8,8 +8,15 @@ gem 'devise'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
-# Replvace pg with sqlite3 as the database for Active Record for deployment
-gem 'pg'
+# Use sqlite3 as the database for Active Record
+group :production do
+  gem 'pg', '~> 0.18.4'
+end
+
+group :development do
+  gem 'sqlite3', '~> 1.4'
+end 
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
