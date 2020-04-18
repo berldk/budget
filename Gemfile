@@ -9,13 +9,6 @@ gem 'devise'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
 # Use sqlite3 as the database for Active Record
-group :production do
-  gem 'pg', '~> 0.18.4'
-end
-
-group :development do
-  gem 'sqlite3', '~> 1.4'
-end 
 
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
@@ -78,6 +71,16 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+end
+
+
+group :development do
+  gem 'sqlite3', '~> 1.4'
+end 
+
+group :production do
+  gem 'pg', '~> 0.18.4'
+  gem 'rails_12factor', '~> 0.0.3'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
