@@ -1,0 +1,42 @@
+<table class="table is-striped is-fullwidth">
+<thead>
+<tr>
+  <th>Category</th>
+  <th>Item Name</th>
+  <th>Projected Cost</th>
+  <th>Actual Cost</th>
+  <th>Difference</th>
+  <th>Status</th>
+  <th>Actions</th>
+</tr>
+</thead>
+<% @budget.items.each do |item| %>
+  <tr>
+    <th><%= 
+    Category.where(id: item.iCategory).pick(:cDesc)
+    %></th>
+    <th><%= item.iName %></th>
+    <th><%= item.projectedCost %></th>
+    <th><%= item.actualCost %></th>
+    <th><%= item.actualCost - item.projectedCost %></th>
+    <th>
+    <% if item.projectedCost.nil? ||  item.actualCost.nil? %>
+      "not set" 
+    <% end %>
+
+    <% if item.projectedCost < item.actualCost %>
+      <span style="color: red;">watch out!</span>
+    <% elsif item.projectedCost >= item.actualCost %>
+      <span style="color: green;">keep it up!</span>
+    <% end %>
+
+
+    </th>
+    <% if current_user.id == item.user_id %>
+      <th><%= link_to 'Delete item', [item.budget, item],
+      method: :delete,
+      data: { confirm: 'Are you sure?' } %></th>
+    <% end %>
+  </tr>
+<% end %>
+</table> 

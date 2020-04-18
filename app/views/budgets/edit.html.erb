@@ -1,0 +1,103 @@
+<h1 class="title">Edit Budget</h1>
+ <div class="table-container">
+
+ <% if current_user && current_user.admin %>
+
+        <%= form_with model: @budget, local: true do |form| %>
+        
+            <% if @budget.errors.any? %>
+              <div id="error_explanation">
+                <h2>
+                  <%= pluralize(@budget.errors.count, "error") %> prohibited
+                  this article from being saved:
+                </h2>
+                <ul>
+                  <% @budget.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+        <table  width="100%">
+            <tr >
+              <td><%= form.label :name %><br><%= form.text_field :name %></td>
+            </tr>
+            <tr >
+            <td colspan="2"><%= form.label :period, 'Period' %><br> 
+            <%= form.select :period, ['Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly', 
+            'Semiannually', 'Annually', 'Vacation'] %></td>
+          </tr>
+
+          
+          <tr>
+          <td><%= form.label :startDate, 'Start Date' %><br><%= date_field(:budget, :startDate) %></td>
+          <td><%= form.label :endDate, 'End Date' %><br><%= date_field(:budget, :endDate) %></td>
+        </tr>
+            <tr >
+              <td><%= form.label :projectedIncome, 'Projected Income' %><br><%= form.number_field :projectedIncome, step: :any %></td>
+              <td> <%= form.label :projectedExtraIncome, 'Projected Extra Income' %><br> <%= form.number_field :projectedExtraIncome, step: :any%></td>
+            </tr>
+
+            <tr style="color:blue">
+              <td><%= form.label :actualIncome, 'Actual Income' %><br><%= form.text_field :actualIncome %></td>
+              <td> <%= form.label :actualExtraIncome, 'Actual Extra Income' %><br> <%= form.number_field :actualExtraIncome, step: :any %></td>
+            </tr>
+            <tr>
+              <td > <%= form.label :projectedCost, 'Projected Expense' %><br>
+              <%= form.text_field :projectedCost, :class => 'textField' , 
+              value: Item.where(budget_id: @budget.id).sum(:projectedCost)
+              %></td>
+              <td style="color:blue"> <%= form.label :actualExpense, 'Actual Expense' %><br> 
+              <%= form.text_field :actualExpense, :class => 'textField' , 
+              value: Item.where(budget_id: @budget.id).sum(:actualCost)
+              %></td>
+              </tr>
+
+            
+            <tr >
+              <td colspan="2"><%= form.submit %></td>
+            </tr>
+        </table>
+        <% end %>
+
+<% end %>
+
+</div>
+<section class="container" style="width:70%">
+  <h2 style="font-weight:bold; color:blue;">Add new item to budget</h2>
+  
+  <%= render 'items/item'  %>
+
+</section>
+<section class="container" style="width:70%">
+    <%= form_with(model: [ @budget, @budget.items.build ], local: true) do |form| %>
+
+    
+      <p>
+        <%= form.label :iName , 'Item Name'%><br>
+        <%= form.text_field :iName %>
+      </p>
+      <p>
+        <%= form.label :projectedCost, 'Projected Cost' %><br>
+        <%= form.number_field :projectedCost, step: :any%>
+      </p>
+      <p>
+        <%= form.label :actualCost, 'Actual Cost' %><br>
+        <%= form.number_field :actualCost, step: :any %>
+      </p>
+      <p>
+        <%= form.label :iCategory, 'Category' %><br>
+        <%= form.collection_select :iCategory, Category.all, :id, :cDesc, { class: 'chosen-select'} %>
+        <%= form.hidden_field :user_id, value: current_user.id %>
+      </p>
+
+
+      <br>
+      <p>
+        <%= form.submit %>
+      </p>
+    <% end %>
+
+
+<%= link_to 'Back', budgets_path %>
+</section>

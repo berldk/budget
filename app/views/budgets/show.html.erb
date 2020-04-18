@@ -1,0 +1,83 @@
+<section class="hero is-info is-small">
+  <div class="hero-body ">
+    <h1 class="title">Personal <%= @budget.period %> Budget</h1>
+  </div>
+</section>
+<section>
+  <h2 class="title" style="margin-top:2%; text-align:center"> 
+  <%= @budget.name %> <br>
+  From <%= @budget.startDate %> To <%= @budget.endDate %></h2>
+</section> 
+<br><br>
+<section class="container" style="font-size:20px;"><%= link_to 'Back', budgets_path %></section><br>
+<div class="container">
+  <div class="tile is-ancestor">
+    <div class="tile is-parent is-6 ">
+            <table width="100%" class="table is-bordered">
+                <thead>
+                <th colspan="2" class="th is-selected">Projected <%= @budget.period %> Income</th>
+                </thead>
+                <tr><th>Projected Income</th><td><%= @budget.projectedIncome %></td></tr>
+                <tr><th>Projected Extra Income</th><td><%= @budget.projectedExtraIncome %></tr>
+                <tr>
+                <th>Total</th>
+                <td style="font-weight:bold"><%= 
+                if @budget.projectedIncome.nil? || @budget.projectedExtraIncome.nil? 
+                  "not set" 
+                else 
+                   @budget.projectedIncome + @budget.projectedExtraIncome
+                end
+                %></td></tr>
+            </table>
+    </div>
+    <div class="tile is-parent is-6 ">
+            <table width="100%" class="table is-bordered">
+              <thead>
+              <th colspan="2" class="th is-selected">Actual <%= @budget.period %> Income</th>
+              </thead>
+              <tr><th>Actual Income</th><td><%= @budget.actualIncome %></td></tr>
+              <tr><th>Actual Extra Income</th><td><%= @budget.actualExtraIncome %></tr>
+              <tr><th>Total</th>
+              <td style="font-weight:bold"> 
+                <%= 
+                  if @budget.actualIncome.nil? ||  @budget.actualExtraIncome.nil? 
+                    "not set" 
+                  else 
+                     @budget.actualIncome + @budget.actualExtraIncome
+                  end       
+                %>
+              </td></tr>
+            </table>
+      </div>
+  </div> 
+</div> 
+</div>
+<br>
+<div class="container">
+  <div class="tile is-ancestor">
+  <div class="tile is-parent is-12">
+    <table width="100%" class="table is-bordered">
+    <thead>
+    <th colspan="2" class="th is-selected">Projected <%= @budget.period%> Expense</th>
+    </thead>
+    <tr><th>Projected Expense</th><td><%= Item.where(budget_id: @budget.id).sum(:projectedCost) %></td></tr>
+    <tr><th>Actual Cost/Expense</th><td><%= Item.where(budget_id: @budget.id).sum(:actualCost) %></td></tr>
+    <tr><th>Difference </th><td style="font-weight:bold"> 
+    <%= Item.where(budget_id: @budget.id).sum(:actualCost) - Item.where(budget_id: @budget.id).sum(:projectedCost) %></td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+
+
+<section class="container" style="width:70%">
+  <h2 style="font-weight:bold; color:blue;">List of items in the budget</h2>
+  
+  <%= render 'items/item'  %>
+
+</section>
+<span style="font-size:20px; font-weight:bold;">
+<%= link_to 'Edit', edit_budget_path(@budget) %> |
+<%= link_to 'Back', budgets_path %>
+<section>

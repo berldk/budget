@@ -1,0 +1,27 @@
+<section class="hero is-info is-small">
+  <div class="hero-body ">
+    <h1 class="title">Categories</h1>
+  </div>
+</section>
+
+<br><br>
+<%= link_to 'Back', categories_path %>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile is-parent is-12 ">
+            <table class="table is-striped is-fullwidth">
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><%= @category.cDesc %></td>
+                </tr>
+            </table> 
+        </div>
+    </div>
+</div>
+<% if current_user && current_user.admin %>
+<%= link_to 'Edit', edit_category_path(@category) %> | 
+<%= link_to 'Create a budget or view budget', controller: 'budgets' %> | 
+<% end %>
+<%= link_to 'Create or view category', controller: 'categories' %>

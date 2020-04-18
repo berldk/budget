@@ -1,0 +1,38 @@
+<div class="table-container">
+    <%= form_with model: @budget, local: true do |form| %> 
+        <% if @budget.errors.any? %>
+            <div id="error_explanation">
+                <h2><%= pluralize(@budget.errors.count, "error") %> prohibited this budget from being saved:</h2>
+                <ul>
+                    <% @budget.errors.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+    <table  width="100%">
+        <tr >
+        <td><%= form.label :name %><br><%= form.text_field :name %></td>
+        </tr>
+        <tr >
+        <td><%= form.label :projectedIncome, 'Projected Income' %><br><%= form.number_field :projectedIncome, step: :any %></td>
+        <td> <%= form.label :projectedExtraIncome, 'Projected Extra Income' %><br> <%= form.number_field :projectedExtraIncome, step: :any%></td>
+        </tr>
+        <tr >
+        <td colspan="2"><%= form.label :period, 'Period' %><br> 
+        <%= form.select :period, ['Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly', 
+        'Semiannually', 'Annually', 'Vacation'] %></td>
+        </tr>
+        <tr>
+        <td><%= form.label :startDate, 'Start Date' %><br><%= date_field(:budget, :startDate) %></td>
+        <td><%= form.label :endDate, 'End Date' %><br><%= date_field(:budget, :endDate) %></td>
+        </tr>
+        <tr>
+        <td > <%= form.label :projectedExpense, 'Projected Expense' %><br> <%= form.number_field :projectedExpense, step: :any%></td>
+        </tr>
+        <tr >
+        <td colspan="2"><%= form.submit %></td>
+        </tr>
+    </table>
+</div>
+<% end %>

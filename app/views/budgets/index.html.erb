@@ -1,0 +1,55 @@
+<section class="hero is-info is-medium">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+      List of all Budgets
+      </h1>
+    </div>
+  </div>
+</section>
+<% if current_user && current_user.admin %>
+
+  <br><strong><%= link_to 'Create a new Budget', new_budget_path %></strong>
+
+  <% end %>
+
+  <strong> | <%= link_to 'Back', '/' %></strong>
+
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Actual Income</th>
+    <th>Actual Extra Income</th>
+    <th>Projected Income</th>
+    <th>Projected Extra Income</th>
+    <th>Period</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Actual Expense</th>
+    <th>Projected Expense</th>
+    <th colspan="3" style="text-align:center; background: lightgray;">Actions</th>
+  </tr>
+ 
+  <% @budgets.each do |budget| %>
+    <tr>
+      <td><%= budget.name %></td>
+      <td><%= budget.actualIncome %></td>
+      <td><%= budget.actualExtraIncome %></td>
+      <td><%= budget.projectedIncome %></td>
+      <td><%= budget.projectedExtraIncome %></td>
+      <td><%= budget.period %></td>
+      <td><%= budget.startDate %></td>
+      <td><%= budget.endDate %></td>
+      <td><%= budget.actualExpense %></td>
+      <td><%= budget.projectedExpense %></td>
+      <td  style="text-align:center; background: lightgray;"><%= link_to 'Show', budget_path(budget) %></td>
+      <td  style="text-align:center; background: lightgray;"><%= link_to 'Edit', edit_budget_path(budget) %></td>
+      <td  style="text-align:center; background: lightgray;">
+      <% if current_user && current_user.admin %>
+        <%= link_to 'Delete', budget_path(budget),
+                method: :delete,
+                data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
